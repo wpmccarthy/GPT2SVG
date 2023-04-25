@@ -1,5 +1,8 @@
 window.onload = function(){
         
+
+
+    // form submission
     document.getElementById('gptForm').addEventListener('submit', async (event) => {
         // Prevent the default form submission behavior
         event.preventDefault();

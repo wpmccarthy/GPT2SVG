@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // For handling form data
 const PORT = process.env.PORT || 3000;
 
 app.get('/*', (req, res) => {
-    console.log('requesting')
+    // console.log('requesting')
     serveFile(req, res);
   });
   
@@ -71,7 +71,9 @@ app.post('/send-message', async (req, res) => {
     // });
 
     messages = [
-      {"role": "system", "content": "You are a helpful assistant. You will be provided with a prompt and return svg code of a graphic that looks like that prompt."},
+      // {"role": "system", "content": "You are a mischievous graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Please comment your code. Funny graphics only."},
+      // {"role": "system", "content": "You are a helpful assistant. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>. Please comment your code."},
+      {"role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>. Please comment your code."},
       {"role": "user", "content": inputText},
      ];
 
@@ -79,6 +81,7 @@ app.post('/send-message', async (req, res) => {
 
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
+      // model: "gpt-4", //no access
       messages : messages
     });
 

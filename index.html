@@ -11,25 +11,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="/gpt_to_svg.css"  />
 
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
 </head>
 
 
 <body>
     <div class="container">
         <div class="row pt-2">
+            <img class="same-height" src="/images/apple-touch-icon.png" alt="svgtoucan">
             <h1>GPT to SVG</h1>
         </div>
 
-        <div class="row">
+        <div class="row pt-2">
             <form id="gptForm">
                 <!-- <label for="inputText"></label> -->
-                <textarea id="inputText" name="inputText" rows="3" cols="50" required></textarea>
+                <textarea id="inputText" name="inputText" rows="3" cols="80" required></textarea>
                 </br>
                 <button class="btn btn-primary" id="btn-send" type="submit">Submit</button>
             </form>
         </div>
 
-        <div class="row">
+        <div class="row pt-2">
             <div class="col"><md-block id="response"></md-block></div>
             <div class="col" id="codeResponse"></div>
         </div>
