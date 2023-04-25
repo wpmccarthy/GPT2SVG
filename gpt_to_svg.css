@@ -1,3 +1,7 @@
 #codeResponse {
     max-width: 90%;
 }
+
+#btn-send {
+    float: right;
+}

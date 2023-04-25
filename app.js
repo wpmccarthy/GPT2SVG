@@ -11,7 +11,7 @@ let configuration;
 let openai;
 
 // Read the contents of the file using the 'readFile' method
-fs.readFile("../open_ai_auth.txt", 'utf8', (err, data) => {
+fs.readFile("./open_ai_auth.txt", 'utf8', (err, data) => {
   // If an error occurs, log the error and exit
   if (err) {
     console.error('Error reading file:', err);
@@ -71,7 +71,7 @@ app.post('/send-message', async (req, res) => {
     // });
 
     messages = [
-      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "system", "content": "You are a helpful assistant. You will be provided with a prompt and return svg code of a graphic that looks like that prompt."},
       {"role": "user", "content": inputText},
      ];
 
@@ -85,7 +85,13 @@ app.post('/send-message', async (req, res) => {
     console.log(completion.data.choices);
     // console.log(completion.data.choices[0].text);
     // res.send(`Original request: ${inputText} - Response: ${completion.data.choices[0].message.content}`);
+
     res.send(completion.data.choices[0].message.content);
+
+    exportFile(completion.data, inputText, messages);
+
+    // res.send(completion.data.choices);
+
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
@@ -95,3 +101,40 @@ app.post('/send-message', async (req, res) => {
     }
   }
 });
+
+
+exportFile = function(completionData, inputText, messages){
+
+  const currentDate = new Date();
+
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+  const dateTimeString = `${year}-${month}-${day}_${hours}:${minutes}:${seconds}`;
+  console.log(dateTimeString);
+
+  fileName =  inputText.replace(" ", '_') + '-' +dateTimeString
+
+  let data = {
+    completionData: completionData,
+    inputText: inputText,
+    messages: messages
+  };
+
+  // Convert the data object to a JSON string
+  const jsonString = JSON.stringify(data, null, 2);
+
+  // Write the JSON string to a new file named 'output.json'
+  fs.writeFile('./response_archive/'+fileName+'.json', jsonString, (err) => {
+    if (err) {
+      console.error('Error writing file:', err);
+    } else {
+      console.log('JSON file created successfully.');
+    }
+  });
+
+}

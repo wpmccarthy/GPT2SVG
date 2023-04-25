@@ -23,6 +23,7 @@ window.onload = function(){
             }
         
             const data = await response.text();
+            
             document.getElementById('response').innerText = data;
             document.getElementById('codeResponse').innerHTML = extractCode(data);
 
@@ -31,6 +32,26 @@ window.onload = function(){
             document.getElementById('response').innerText = 'An error occurred while processing your request.';
         }
     });
+
+
+    // expanding textarea
+
+    function autoResizeTextarea(textarea) {
+        // Set the textarea's height to 'auto' to calculate the scroll height
+        textarea.style.height = 'auto';
+        
+        // Set the textarea's height to its scroll height to fit the content
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+    
+    const textarea = document.getElementById('inputText');
+    
+    // Call the autoResizeTextarea function initially to fit the content
+    autoResizeTextarea(textarea);
+    
+    // Add an event listener for the 'input' event to resize the textarea
+    textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+    
 
 };
 
@@ -54,5 +75,4 @@ function findTextBetweenChars(text, startChar, endChar) {
     }
   
     return matches;
-  }
-  
+}
