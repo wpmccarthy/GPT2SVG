@@ -100,6 +100,7 @@ app.get('/*', (req, res) => {
 
 // Serve files
 var serveFile = function (req, res) {
+  console.log('\t req: ' + req);
   var fileName = req.params[0];
   console.log('\t File requested: ' + fileName);
   // return res.sendFile(fileName, { root: path.join(__dirname, 'public')});
