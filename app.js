@@ -101,8 +101,13 @@ app.get('/*', (req, res) => {
 // Serve files
 var serveFile = function (req, res) {
   var fileName = req.params[0];
-  // console.log('\t File requested: ' + fileName);
-  return res.sendFile(fileName, { root: path.join(__dirname, 'public')});
+  console.log('\t File requested: ' + fileName);
+  // return res.sendFile(fileName, { root: path.join(__dirname, 'public')});
+  if (!fileName) {
+    return res.status(500).send('fileName is not defined');
+  }
+  
+  return res.sendFile(fileName, { root: __dirname });
 };
 
 // Handle the POST request from form
