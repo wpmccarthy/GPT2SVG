@@ -3,8 +3,5 @@
     "name": "gpt-2-svg",
     "builds": [
        { "src": "app.js", "use": "@vercel/node" }
-    ],
-    "routes": [
-       { "src": "/(.*)", "dest": "/app.js" }
     ]
  }
