@@ -19,7 +19,7 @@ if (process.env.OAI_KEY) {
 } else {
 
   // Read the contents of the file using the 'readFile' method
-  fs.readFile("../open_ai_auth.txt", 'utf8', (err, data) => {
+  fs.readFile("./open_ai_auth.txt", 'utf8', (err, data) => {
 
     // If an error occurs, log the error and exit
     if (err) {
@@ -95,6 +95,7 @@ app.use((req, res, next) => {
 app.get('/*', (req, res) => {
   // console.log('requesting')
   serveFile(req, res);
+  
 });
 
 
@@ -102,7 +103,8 @@ app.get('/*', (req, res) => {
 // Serve files
 var serveFile = function (req, res) {
   console.log('\t req: ' + req.params);
-  var fileName = req.params[0];
+  // var fileName = req.params[0];
+  var fileName = req.path.substring(1);
   console.log('\t File requested: ' + fileName);
   // return res.sendFile(fileName, { root: path.join(__dirname, 'public')});
   if (!fileName) {
