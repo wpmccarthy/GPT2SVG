@@ -102,7 +102,7 @@ app.get('/*', (req, res) => {
 var serveFile = function (req, res) {
   var fileName = req.params[0];
   // console.log('\t File requested: ' + fileName);
-  return res.sendFile(fileName, { root: __dirname });
+  return res.sendFile(fileName, { root: __dirname + '/public/' });
 };
 
 // Handle the POST request from form
