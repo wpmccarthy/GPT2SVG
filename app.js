@@ -132,8 +132,8 @@ var serveFile = function (req, res) {
 app.post('/send-message', async (req, res) => {
 
   // const instanceId = req.session.apiInstanceId ? req.session.apiInstanceId :'default';
-  // const instanceId = 'default';
-  console.log('instanceID:',  instanceId);
+  const instanceId = 'default';
+  // console.log('instanceID:',  instanceId);
   const apiInstance = apiInstances.get(instanceId);
 
   const inputText = req.body.inputText;
