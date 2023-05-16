@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 
 
 app.get('/*', (req, res) => {
-  console.log('requesting: ' + `path: ${JSON.stringify(req.path, null, 2)}`);
+  console.log('requesting: ' + `path: ${JSON.stringify(req.url, null, 2)}`);
   serveFile(req, res);
 });
 
