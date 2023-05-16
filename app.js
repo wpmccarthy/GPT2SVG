@@ -1,6 +1,6 @@
 // Import the required packages
 const express = require('express');
-const session = require('express-session');
+const session = require('cookie-session');
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
@@ -98,9 +98,10 @@ app.get('/*', (req, res) => {
 });
 
 
+
 // Serve files
 var serveFile = function (req, res) {
-  console.log('\t req: ' + req);
+  console.log('\t req: ' + req.params);
   var fileName = req.params[0];
   console.log('\t File requested: ' + fileName);
   // return res.sendFile(fileName, { root: path.join(__dirname, 'public')});
