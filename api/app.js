@@ -19,7 +19,7 @@ if (process.env.OAI_KEY) {
 } else {
 
   // Read the contents of the file using the 'readFile' method
-  fs.readFile("./open_ai_auth.txt", 'utf8', (err, data) => {
+  fs.readFile("../open_ai_auth.txt", 'utf8', (err, data) => {
 
     // If an error occurs, log the error and exit
     if (err) {
