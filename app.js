@@ -14,6 +14,8 @@ const uuid = require('uuid');
 
 let localOnly = true;
 
+let defaultInstance = true;
+
 if (process.env.OAI_KEY) {
   console.log('env key found');
 } else {
@@ -73,31 +75,43 @@ app.use(
   })
 );
 
+app.use(express.static('public'))
+
+
 const apiInstances = new Map();
 
 // session
 app.use((req, res, next) => {
 
-  if (!req.session.apiInstanceId) {
+  // if ((!req.session.apiInstanceId) && (!defaultInstance)) {
+  //   // Create a new instance of CustomAPI with a unique ID
+  //   const instanceId = Math.random().toString(36).substring(2, 9);
+  //   req.session.apiInstanceId = instanceId;
+
+  //   const newInstance = new LocalOpenAI(instanceId);
+  //   apiInstances.set(instanceId, newInstance);
+
+  //   console.log('New LocalOpenAI instance created for user:', instanceId);
+
+  // } else {
     // Create a new instance of CustomAPI with a unique ID
-    const instanceId = Math.random().toString(36).substring(2, 9);
-    req.session.apiInstanceId = instanceId;
+    const newInstance = new LocalOpenAI('default');
+    apiInstances.set('default', newInstance);
 
-    const newInstance = new LocalOpenAI(instanceId);
-    apiInstances.set(instanceId, newInstance);
-
-    console.log('New LocalOpenAI instance created for user:', instanceId);
-  }
+    console.log('New default LocalOpenAI instance created');
+  // }
   next();
 });
 
 
-app.get('/*', (req, res) => {
-  console.log('requesting: ' + `path: ${JSON.stringify(req.url, null, 2)}`);
-  serveFile(req, res);
-});
+// app.get('/*', (req, res) => {
+//   console.log('requesting: ' + `path: ${JSON.stringify(req.url, null, 2)}`);
+//   serveFile(req, res);
+// });
 
-
+app.get('/', (req, res) => {
+  res.sendFile('index.html', {root: path.join(__dirname, 'public')});
+})
 
 // Serve files
 var serveFile = function (req, res) {
@@ -117,11 +131,14 @@ var serveFile = function (req, res) {
 // Handle the POST request from form
 app.post('/send-message', async (req, res) => {
 
-  const instanceId = req.session.apiInstanceId;
+  // const instanceId = req.session.apiInstanceId ? req.session.apiInstanceId :'default';
+  // const instanceId = 'default';
+  console.log('instanceID:',  instanceId);
   const apiInstance = apiInstances.get(instanceId);
 
   const inputText = req.body.inputText;
-  console.log(inputText);
+  // console.log(inputText);
+  // console.log(apiInstance);
 
   if (apiInstance) {
     const data = await apiInstance.sendMessage(inputText);
