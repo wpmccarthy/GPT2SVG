@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 
 
 app.get('/*', (req, res) => {
-  console.log('requesting: ' + req.path.substring(1));
+  console.log('requesting: ' + req);
   serveFile(req, res);
 });
 
