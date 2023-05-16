@@ -128,7 +128,7 @@ var serveFile = function (req, res) {
   return res.sendFile(fileName, { root: __dirname });
 };
 
-// Handle the POST request from form
+// Handle the POST request from form 
 app.post('/send-message', async (req, res) => {
 
   // const instanceId = req.session.apiInstanceId ? req.session.apiInstanceId :'default';
