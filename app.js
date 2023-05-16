@@ -14,23 +14,23 @@ const uuid = require('uuid');
 
 let localOnly = true;
 
-// Read the contents of the file using the 'readFile' method
-fs.readFile("./open_ai_auth.txt", 'utf8', (err, data) => {
-  // If an error occurs, log the error and exit
-  if (err) {
-    console.error('Error reading file:', err);
-    return;
-  }
-  process.env.OPENAI_API_KEY = data;
-  // console.log(process.env.OPENAI_API_KEY);
+if (process.env.OAI_KEY) {
+  console.log('env key found');
+} else {
 
-  // configuration = new Configuration({
-  //   apiKey: process.env.OPENAI_API_KEY,
-  // });
+  // Read the contents of the file using the 'readFile' method
+  fs.readFile("./open_ai_auth.txt", 'utf8', (err, data) => {
 
-  // openai = new OpenAIApi(configuration);
+    // If an error occurs, log the error and exit
+    if (err) {
+      console.error('Error reading file:', err);
+      return;
+    } else {
+      process.env.OAI_KEY = data;
+    }
 
-});
+  });
+};
 
 // Create an instance of the Express app
 const app = express();
@@ -54,19 +54,19 @@ try {
   const certificate = fs.readFileSync('cert.pem', 'utf8');
   const credentials = { key: privateKey, cert: certificate };
   var
-  server = require('https').createServer(credentials, app).listen(PORT, () => {
-    console.log('HTTPS server running on port ' + PORT);
-  })
-    // io = require('socket.io')(server,{
-    //   pingTimeout:60000
-    //     });
+    server = require('https').createServer(credentials, app).listen(PORT, () => {
+      console.log('HTTPS server running on port ' + PORT);
+    })
+  // io = require('socket.io')(server,{
+  //   pingTimeout:60000
+  //     });
 } catch (err) {
   console.log("cannot find SSL certificates; falling back to http");
   var server = app.listen(PORT, () => {
     console.log('Server running on port ' + PORT);
   })
   // io = require('socket.io')(server,{
-	//   pingTimeout:60000
+  //   pingTimeout:60000
   //     });
 }
 
@@ -106,16 +106,16 @@ app.use((req, res, next) => {
 
 
 app.get('/*', (req, res) => {
-    // console.log('requesting')
-    serveFile(req, res);
-  });
-  
+  // console.log('requesting')
+  serveFile(req, res);
+});
+
 
 // Serve files
 var serveFile = function (req, res) {
-    var fileName = req.params[0];
-    // console.log('\t File requested: ' + fileName);
-    return res.sendFile(fileName, { root: __dirname });
+  var fileName = req.params[0];
+  // console.log('\t File requested: ' + fileName);
+  return res.sendFile(fileName, { root: __dirname });
 };
 
 // Handle the POST request from form
@@ -134,7 +134,7 @@ app.post('/send-message', async (req, res) => {
     res.status(500).send('API instance not found');
   }
 
-// old version (single api instance)
+  // old version (single api instance)
   // try {
   //   // const completion = await openai.createCompletion({
   //   //   model: "gpt-3.5-turbo",
@@ -178,7 +178,7 @@ app.post('/send-message', async (req, res) => {
 });
 
 
-exportFile = function(completionData, inputText, messages){
+exportFile = function (completionData, inputText, messages) {
 
   const currentDate = new Date();
 
@@ -192,7 +192,7 @@ exportFile = function(completionData, inputText, messages){
   const dateTimeString = `${year}-${month}-${day}_${hours}:${minutes}:${seconds}`;
   console.log(dateTimeString);
 
-  fileName =  inputText.replace(" ", '_') + '-' +dateTimeString
+  fileName = inputText.replace(" ", '_') + '-' + dateTimeString
 
   let data = {
     completionData: completionData,
@@ -204,7 +204,7 @@ exportFile = function(completionData, inputText, messages){
   const jsonString = JSON.stringify(data, null, 2);
 
   // Write the JSON string to a new file named 'output.json'
-  fs.writeFile('./response_archive/'+fileName+'.json', jsonString, (err) => {
+  fs.writeFile('./response_archive/' + fileName + '.json', jsonString, (err) => {
     if (err) {
       console.error('Error writing file:', err);
     } else {
@@ -221,7 +221,7 @@ class LocalOpenAI {
   constructor(id) {
     this.id = id;
     this.configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: process.env.OAI_KEY,
     });
     this.openai = new OpenAIApi(this.configuration);
   }
@@ -233,8 +233,8 @@ class LocalOpenAI {
         // {"role": "system", "content": "You are a mischievous graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Please comment your code. Funny graphics only."},
         // {"role": "system", "content": "You are a helpful assistant. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>. Please comment your code."},
         // {"role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=500 height=500>. Explain how the elements of your graphic relate to the prompt. Comment your code."},
-        {"role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>."},
-        {"role": "user", "content": inputText},
+        { "role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>." },
+        { "role": "user", "content": inputText },
       ];
 
       console.log(messages);
@@ -242,7 +242,7 @@ class LocalOpenAI {
       const completion = await this.openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         // model: "gpt-4", //no access
-        messages : messages
+        messages: messages
       });
 
       console.log(completion.data.choices);
@@ -251,7 +251,7 @@ class LocalOpenAI {
 
       exportFile(completion.data, inputText, messages);
 
-      return(completion.data.choices[0].message.content);
+      return (completion.data.choices[0].message.content);
 
       // res.send(completion.data.choices);
 
