@@ -40,13 +40,6 @@ app.use(bodyParser.urlencoded({ extended: false })); // For handling form data
 // Set the listening port for the server
 const PORT = process.env.PORT || 3000;
 
-// const httpsServer = https.createServer(credentials, app);
-
-
-
-// httpsServer.listen(PORT, () => {
-//   console.log('HTTPS server running on port ' + PORT);
-// });
 
 try {
   assert(localOnly);
@@ -99,12 +92,6 @@ app.use((req, res, next) => {
 });
 
 
-// app.post('/api_key', (req, res) => {
-//   console.log('Received API Key:', req.body.api_key);
-//   res.status(200).send('API Key received successfully');
-// });
-
-
 app.get('/*', (req, res) => {
   // console.log('requesting')
   serveFile(req, res);
@@ -133,47 +120,6 @@ app.post('/send-message', async (req, res) => {
   } else {
     res.status(500).send('API instance not found');
   }
-
-  // old version (single api instance)
-  // try {
-  //   // const completion = await openai.createCompletion({
-  //   //   model: "gpt-3.5-turbo",
-  //   //   prompt: inputText,
-  //   // });
-
-  //   messages = [
-  //     // {"role": "system", "content": "You are a mischievous graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Please comment your code. Funny graphics only."},
-  //     // {"role": "system", "content": "You are a helpful assistant. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>. Please comment your code."},
-  //     {"role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=500 height=500>. Please comment your code."},
-  //     {"role": "user", "content": inputText},
-  //    ];
-
-  //    console.log(messages);
-
-  //   const completion = await req.session.openai.createChatCompletion({
-  //     model: "gpt-3.5-turbo",
-  //     // model: "gpt-4", //no access
-  //     messages : messages
-  //   });
-
-  //   console.log(completion.data.choices);
-  //   // console.log(completion.data.choices[0].text);
-  //   // res.send(`Original request: ${inputText} - Response: ${completion.data.choices[0].message.content}`);
-
-  //   res.send(completion.data.choices[0].message.content);
-
-  //   exportFile(completion.data, inputText, messages);
-
-  //   // res.send(completion.data.choices);
-
-  // } catch (error) {
-  //   if (error.response) {
-  //     console.log(error.response.status);
-  //     console.log(error.response.data);
-  //   } else {
-  //     console.log(error.message);
-  //   }
-  // }
 
 });
 
@@ -230,7 +176,6 @@ class LocalOpenAI {
 
     try {
       let messages = [
-        // {"role": "system", "content": "You are a mischievous graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Please comment your code. Funny graphics only."},
         // {"role": "system", "content": "You are a helpful assistant. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>. Please comment your code."},
         // {"role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=500 height=500>. Explain how the elements of your graphic relate to the prompt. Comment your code."},
         { "role": "system", "content": "You are a graphic designer. You will be provided with a prompt and return svg code of a graphic that looks like that prompt. Use <svg width=400 height=400>." },
