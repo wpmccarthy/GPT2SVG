@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPT to SVG</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT to SVG</title>
 
-  <script src="./gpt_to_svg.js"></script>
-  <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="/gpt_to_svg.css"  />
+    <script src="./gpt_to_svg.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
 
-  <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/gpt_to_svg.css" />
+
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
 
 </head>
 
 
 <body>
-    <div class="container">
+    <!-- <div class="container">
         <div class="row pt-2">
             <img class="same-height" src="/images/apple-touch-icon.png" alt="svgtoucan">
             <h1>GPT to SVG</h1>
@@ -26,7 +31,6 @@
 
         <div class="row pt-2">
             <form id="gptForm">
-                <!-- <label for="inputText"></label> -->
                 <textarea id="inputText" name="inputText" rows="3" cols="80" required></textarea>
                 </br>
                 <button class="btn btn-primary" id="btn-send" type="submit">Submit</button>
@@ -34,11 +38,65 @@
         </div>
 
         <div class="row pt-2">
-            <div class="col"><md-block id="response"></md-block></div>
-            <div class="col" id="codeResponse"></div>
+            <div class="col">
+                <md-block id="textBefore"></md-block>
+                <textarea class="col" id="codeBlock"  name="codeBlock" rows="10" cols="40"></textarea>
+                <md-block id="textAfter"></md-block>
+            </div>
+           
+            <div class="col" id="svgContainer"></div>
+            
         </div>
     
-    </div>
+    </div> -->
+
+
+
+    <div class="container">
+
+        <div class="row pt-2">
+            <img class="same-height" src="/images/apple-touch-icon.png" alt="svgtoucan">
+            <h1>GPT to SVG</h1>
+        </div>
+
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-12 col-md-6">
+                <!-- Text Input Form -->
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <form id="gptForm">
+                            <textarea id="inputText" class="form-control text-area" name="inputText" rows="3" required></textarea>
+                            </br>
+                            <button class="btn btn-primary" id="btn-send" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- GPT Response -->
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <!-- Text preceding extracted code -->
+                        <md-block id="textBefore"></md-block>
+
+                        <!-- Code block -->
+                        <textarea class="form-control text-area" id="codeBlock" name="codeBlock" style="display: none"></textarea>
+
+                        <!-- Text following extracted code -->
+                        <md-block id="textAfter"></md-block>
+                        <div class="col-12"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-12 col-md-6">
+                <div><svg id="svgContainer" xmlns="http://www.w3.org/2000/svg" width="400" height="400"></svg></div>
+            </div>
+
+        </div>
+
 
 </body>
+
 </html>
