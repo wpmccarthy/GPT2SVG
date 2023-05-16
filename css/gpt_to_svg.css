@@ -1,0 +1,21 @@
+#btn-send {
+    float: right;
+}
+
+.same-height {
+height: 3em;
+padding-right: 10px;
+object-fit: cover; /* Preserve the aspect ratio of the image */
+}
+
+.text-area {
+    resize: none;
+    width: 100%;
+    height: auto;
+    /* min-height: 3em; */
+    overflow: hidden;
+}
+
+#codeBlock{
+    height: auto;
+}
