@@ -43,27 +43,31 @@ app.use(bodyParser.urlencoded({ extended: false })); // For handling form data
 const PORT = process.env.PORT || 3000;
 
 
-try {
-  assert(localOnly);
-  const privateKey = fs.readFileSync('key.pem', 'utf8');
-  const certificate = fs.readFileSync('cert.pem', 'utf8');
-  const credentials = { key: privateKey, cert: certificate };
-  var
-    server = require('https').createServer(credentials, app).listen(PORT, () => {
-      console.log('HTTPS server running on port ' + PORT);
-    })
-  // io = require('socket.io')(server,{
-  //   pingTimeout:60000
-  //     });
-} catch (err) {
-  console.log("cannot find SSL certificates; falling back to http");
-  var server = app.listen(PORT, () => {
-    console.log('Server running on port ' + PORT);
-  })
-  // io = require('socket.io')(server,{
-  //   pingTimeout:60000
-  //     });
-}
+// try {
+//   assert(localOnly);
+//   const privateKey = fs.readFileSync('/etc/letsencrypt/live/wpmccarthy.com/privkey.pem', 'utf8');
+//   const certificate = fs.readFileSync('/etc/letsencrypt/live/wpmccarthy.com/cert.pem', 'utf8');
+//   const credentials = { key: privateKey, cert: certificate };
+//   var
+//     server = require('https').createServer(credentials, app).listen(PORT, () => {
+//       console.log('HTTPS server running on port ' + PORT);
+//     })
+//   // io = require('socket.io')(server,{
+//   //   pingTimeout:60000
+//   //     });
+// } catch (err) {
+//   console.log("cannot find SSL certificates; falling back to http");
+//   var server = app.listen(PORT, () => {
+//     console.log('Server running on port ' + PORT);
+//   })
+//   // io = require('socket.io')(server,{
+//   //   pingTimeout:60000
+//   //     });
+// }
+
+var server = app.listen(PORT, () => {
+  console.log('Server running on port ' + PORT);
+  });
 
 // create session
 app.use(
@@ -75,7 +79,25 @@ app.use(
   })
 );
 
-app.use(express.static('public'))
+// app.use(express.static('public'))
+// app.use('/static', express.static(path.join(__dirname, 'public')));
+
+// app.get('/gpt2svg/', (req, res) => {
+//   res.sendFile('index.html', {root: path.join(__dirname, 'public')});
+// })
+
+
+// Log each request
+app.use('/gpt2svg', (req, res, next) => {
+  console.log('Request Path:', req.path);
+  next();
+});
+
+app.use('/gpt2svg', express.static(path.join(__dirname, 'public')));
+
+
+// // Serve static files from the "static" directory
+// app.use('/', express.static(path.join(__dirname, 'static')));
 
 
 const apiInstances = new Map();
@@ -104,19 +126,21 @@ app.use((req, res, next) => {
 });
 
 
+
 // app.get('/*', (req, res) => {
 //   console.log('requesting: ' + `path: ${JSON.stringify(req.url, null, 2)}`);
 //   serveFile(req, res);
 // });
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html', {root: path.join(__dirname, 'public')});
-})
+// app.get('/*', (req, res) => {
+//   res.sendFile('index.html', {root: path.join(__dirname, 'public')});
+// })
 
 // Serve files
 var serveFile = function (req, res) {
   // var fileName = req.params[0];
   var fileName = req.path.substring(1);
+  console.log(fileName);
 
   // console.log('\t File requested: ' + fileName);
 
@@ -129,7 +153,7 @@ var serveFile = function (req, res) {
 };
 
 // Handle the POST request from form 
-app.post('/send-message', async (req, res) => {
+app.post('gpt2svg/send-message', async (req, res) => {
 
   // const instanceId = req.session.apiInstanceId ? req.session.apiInstanceId :'default';
   const instanceId = 'default';

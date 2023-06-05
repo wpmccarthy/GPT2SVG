@@ -28,7 +28,7 @@ window.onload = function () {
         };
 
         try {
-            const response = await fetch('/send-message', {
+            const response = await fetch('/gpt2svg/send-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
