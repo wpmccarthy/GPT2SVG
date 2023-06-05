@@ -6,10 +6,15 @@ window.onload = function () {
     const codeBlock = document.getElementById("codeBlock");
     const svgContainer = document.getElementById("svgContainer");
 
+    const submitBtn = document.getElementById("btn-send");
+    const loader = document.getElementById("response-loader");
+
     // form submission
     document.getElementById('gptForm').addEventListener('submit', async (event) => {
         // Prevent the default form submission behavior
         event.preventDefault();
+        loader.style.display = "block";
+        submitBtn.style.display = "none";
 
         // BUG UPDATING TEXT RN
 
@@ -28,7 +33,7 @@ window.onload = function () {
         };
 
         try {
-            const response = await fetch('/gpt2svg/send-message', {
+            const response = await fetch('send-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -49,6 +54,9 @@ window.onload = function () {
 
             textPieces = extractCodeBlocks(data);
 
+
+            loader.style.display = "none";
+            submitBtn.style.display = "block";
             // Update text response on left
             document.getElementById('textBefore').innerText = textPieces['textBefore'];
             currentCode = getSVGContent(textPieces['codeBlock']);

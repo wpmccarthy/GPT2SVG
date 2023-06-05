@@ -153,7 +153,7 @@ var serveFile = function (req, res) {
 };
 
 // Handle the POST request from form 
-app.post('gpt2svg/send-message', async (req, res) => {
+app.post('/gpt2svg/send-message', async (req, res) => {
 
   // const instanceId = req.session.apiInstanceId ? req.session.apiInstanceId :'default';
   const instanceId = 'default';
