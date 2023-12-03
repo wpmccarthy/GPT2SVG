@@ -176,13 +176,13 @@ exportFile = function (completionData, inputText, messages) {
   const jsonString = JSON.stringify(data, null, 2);
 
   // Write the JSON string to a new file named 'output.json'
-  fs.writeFile('./response_archive/' + fileName + '.json', jsonString, (err) => {
-    if (err) {
-      console.error('Error writing file:', err);
-    } else {
-      console.log('JSON file created successfully.');
-    }
-  });
+  // fs.writeFile('./response_archive/' + fileName + '.json', jsonString, (err) => {
+  //   if (err) {
+  //     console.error('Error writing file:', err);
+  //   } else {
+  //     console.log('JSON file created successfully.');
+  //   }
+  // });
 
 }
 
@@ -211,8 +211,8 @@ class LocalOpenAI {
       console.log(messages);
 
       const completion = await this.openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        // model: "gpt-4", //no access
+        // model: "gpt-3.5-turbo",
+        model: "gpt-4", //no access
         messages: messages
       });
 
